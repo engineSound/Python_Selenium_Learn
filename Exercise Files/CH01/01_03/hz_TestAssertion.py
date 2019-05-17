@@ -1,8 +1,7 @@
 ################################################
 ################################################
 
-# This example shows how to properly close tabs
-# and eventually close the opening window.
+# This example shows how to handle error
 
 ################################################
 ################################################
@@ -21,18 +20,18 @@ main_window = browser.current_window_handle
 
 
 first_link = first_result.find_element_by_tag_name('a')
-# save the window opener (current window, do not mistaken with tab... not the same)
-# Open the link in a new tab by sending key storkes on the element
-# use: Keys.CONTRL + Keys.SHIFT + Keys.RETURN to open tab on top of the stack
-# use: (MAC) Keys.COMMAND + Keys.SHIFT + Keys.RETURN to open tab on top of the stack
-# 打开一个新的标签
 first_link.send_keys(Keys.COMMAND + Keys.RETURN)
-sleep(3)
-browser.switch_to.window(browser.window_handles[1])
-sleep(2)
-browser.close()
 
-# This has to be the last opening tab in the browser to make
-# the quit() work
-browser.switch_to.window(browser.window_handles[0])
+sleep(2)
+
+# set focus on the tab just opened.
+browser.switch_to.window(browser.window_handles[1])
+
+try:
+    assert "Python titile" in browser.title
+    print('Assertion test pass')
+
+except Exception as e:
+    print('Assertion test failed', format(e))
+
 browser.quit()
